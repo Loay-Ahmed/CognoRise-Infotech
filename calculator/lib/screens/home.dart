@@ -39,28 +39,48 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       print(calcEquation);
       print(userEquation);
-      if (calculated &&
+      if (num == ".") {
+        print("found");
+        List<String> numbers = calcEquation.split(" ");
+        if (!numbers[numbers.length - 1].contains(".") &&
+            (userEquation[userEquation.length - 1] != "%" &&
+                userEquation[userEquation.length - 1] != "✕" &&
+                userEquation[userEquation.length - 1] != "÷" &&
+                userEquation[userEquation.length - 1] != "—" &&
+                userEquation[userEquation.length - 1] != "+")) {
+          numbers[numbers.length - 1] = numbers[numbers.length - 1] + ".";
+        }
+        userEquation = numbers.join("");
+        calcEquation = numbers.join(" ");
+      } else if (calculated &&
           (num != "%" &&
               num != "✕" &&
               num != "÷" &&
               num != "—" &&
-              num != "+")) {
+              num != "+" &&
+              num != ".")) {
+        print("first if");
+
         userEquation = num;
         calcEquation = num;
       } else if ((userEquation[userEquation.length - 1] == "%" ||
               userEquation[userEquation.length - 1] == "✕" ||
               userEquation[userEquation.length - 1] == "÷" ||
               userEquation[userEquation.length - 1] == "—" ||
-              userEquation[userEquation.length - 1] == "+") &&
+              userEquation[userEquation.length - 1] == "+" ||
+              userEquation[userEquation.length - 1] == ".") &&
           (num == "%" ||
               num == "✕" ||
               num == "÷" ||
               num == "—" ||
               num == "+")) {
-        userEquation = userEquation.substring(0, userEquation.length - 1);
-        userEquation += num;
-        calcEquation = calcEquation.substring(0, calcEquation.length - 3);
-        calcEquation += " $num ";
+        print("second if");
+        if (userEquation[userEquation.length - 1] != ".") {
+          userEquation = userEquation.substring(0, userEquation.length - 1);
+          userEquation += num;
+          calcEquation = calcEquation.substring(0, calcEquation.length - 3);
+          calcEquation += " $num ";
+        }
       } else {
         userEquation += num;
         calcEquation +=
@@ -69,7 +89,27 @@ class _HomePageState extends State<HomePage> {
                 : num;
       }
       calculated = false;
+      print(calcEquation);
+      print(userEquation);
+      if (num != "%" && num != "✕" && num != "÷" && num != "—" && num != "+") {
+        List<String> numbers = calcEquation.split(" ");
+        if ((userEquation[userEquation.length - 2] != "%" &&
+                userEquation[userEquation.length - 2] != "✕" &&
+                userEquation[userEquation.length - 2] != "÷" &&
+                userEquation[userEquation.length - 2] != "—" &&
+                userEquation[userEquation.length - 2] != "+") &&
+            numbers[numbers.length - 1][0] == "0" &&
+            numbers[numbers.length - 1][1] != ".") {
+          numbers[numbers.length - 1] =
+              numbers[numbers.length - 1].substring(1);
+        }
+
+        userEquation = numbers.join("");
+        calcEquation = numbers.join(" ");
+      }
     });
+    print(calcEquation);
+    print(userEquation);
   }
 
   void evaluate() {
